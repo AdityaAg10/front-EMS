@@ -1,0 +1,21 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #282c34;
+  color: white;
+}
+
+.navbar h2 {
+  cursor: pointer;
+}
+
+.navbar button {
+  background-color: #ff5757;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 5px;
+}
