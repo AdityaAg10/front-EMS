@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./components/Login";
 import Register from "./components/Register";
-import Events from "./components/Events";
+import Events from "./components/models/Events";
 import AdminIndex from "./components/events/AdminIndex";
 import UserIndex from "./components/events/UserIndex";
 import ErrorPage from "./pages/ErrorPage";

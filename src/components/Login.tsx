@@ -27,33 +27,30 @@ const Login = () => {
         }
       });
 
-      console.log("Response Data:", res.data); // Debugging output
 
-      // Extract the token correctly
+
       const token = res.data;
       console.log("Decoded Token:", jwtDecode<DecodedToken>(token));
       if (!token) {
         throw new Error("Token not found in response");
       }
 
-      login(token); // Save token in context
+      login(token);
 
 
-      // Decode the token safely
+      
       const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
       const userRole = decoded.role;
 
-      console.log("Decoded Token:", decoded); // Debugging output
+      console.log("Decoded Token:", decoded);
 
-      // Redirect based on role
       navigate(userRole === "ROLE_ADMIN" ? "/adminEvents" : "/userEvents");
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.error("Login failed:", error.response?.data || error.message);
-        alert(error.response?.data?.message || "Invalid credentials");
+        console.log(error);
+        alert(error.response?.data?.message || "Invalid Credentials");
       } else {
-        console.error("Unexpected error:", error);
-        alert("Something went wrong, please try again.");
+        alert("Something went wrong");
       }
     }
   };

@@ -1,0 +1,55 @@
+import React from "react";
+import Events from "../models/Events";
+import { useAuth } from "../../context/AuthContext";
+import { jwtDecode } from "jwt-decode";
+import Navbar from "../Navbar";
+import "../../styles/Events.css"
+
+
+interface DecodedToken {
+  sub: string;
+  role: string;
+  exp?: number;
+  iat?: number;
+}
+
+interface DashboardProps {
+  defaultUsername: string;
+}
+
+const Dashboard: React.FC<DashboardProps> = ({ defaultUsername }) => {
+  const { token } = useAuth();
+
+  let username = defaultUsername;
+  let role = "Unknown Role";
+  let expirationTime = "N/A";
+
+  try {
+    if (token) {
+      const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
+      username = decoded.sub;
+      role = decoded.role;
+
+      if (decoded.exp) {
+        const expDate = new Date(decoded.exp * 1000);
+        expirationTime = expDate.toLocaleString();
+      }
+    }
+  } catch (error) {
+    console.error("Error decoding token:", error);
+  }
+
+  return (
+    <>
+      <Navbar />
+      <div className="dashboard-container">
+        <h1>Welcome, {username}!</h1>
+        <p>Role: {role}</p>
+        <p>Token Expires At: {expirationTime}</p>
+        <Events />
+      </div>
+    </>
+  );
+};
+
+export default Dashboard;
