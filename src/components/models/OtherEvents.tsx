@@ -38,29 +38,7 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
       .catch(() => alert("Failed to fetch events"));
   };
 
-  const handleDelete = async (eventId: number) => {
-    try {
-      const token = localStorage.getItem("token");
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      await api.delete(`/events/${eventId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setEvents(events.filter((event) => event.id !== eventId));
-      alert("Event deleted successfully!");
-    } catch (error) {
-      console.log(error);
-      if (axios.isAxiosError(error) && error.response) {
-        const errorMessage = error.response.data?.data || "Access Denied";
-        console.error("Error deleting event:", errorMessage);
-        alert(`Failed to delete event: ${errorMessage}`);
-      } else {
-        console.error("Unexpected error:", error);
-        alert("An unexpected error occurred while deleting the event.");
-      }
-    }
-  };
 
   return (
     <div className="events-container">
@@ -73,7 +51,7 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
             </div>
             <h4>Hosted by - {event.hosts}</h4>
             <p>{event.description}</p>
-            <button className="delete-btn" onClick={() => handleDelete(event.id)}>Delete</button>
+            <button className="join-btn">Join</button>
           </li>
         ))}
       </ul>
