@@ -16,7 +16,7 @@ interface DecodedToken {
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ userName: "", password: "" });
+  const [form, setForm] = useState({ userName: "Aditya4", password: "securepassword4" });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,18 +27,14 @@ const Login = () => {
         }
       });
 
-
-
-      const token = res.data;
+      const token = res.data.token;
       console.log("Decoded Token:", jwtDecode<DecodedToken>(token));
       if (!token) {
         throw new Error("Token not found in response");
       }
-
+      
       login(token);
 
-
-      
       const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
       const userRole = decoded.role;
 
@@ -50,6 +46,7 @@ const Login = () => {
         console.log(error);
         alert(error.response?.data?.message || "Invalid Credentials");
       } else {
+        console.log(error)
         alert("Something went wrong");
       }
     }

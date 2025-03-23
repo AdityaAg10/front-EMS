@@ -42,26 +42,17 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Centered Title */
-.events-container h2 {
-  text-align: center;
-  color: #333;
-  font-size: 1.8rem;
-  margin-bottom: 20px;
-}
-
-/* Grid Layout for Events */
 .event-list {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Creates two columns */
-  gap: 20px; /* Spacing between items */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px; 
   padding: 0;
 }
 
-/* Individual Event Item */
 .event-item {
   background: white;
   padding: 15px;
+  text-align: left;
   border-radius: 8px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
@@ -71,45 +62,72 @@
   transform: scale(1.02);
 }
 
-/* Event Title */
 .event-item h2 {
   color: #007bff;
   margin-bottom: 5px;
 }
 
-/* Event Subtitle */
 .event-item h4 {
   color: #555;
   font-size: 1rem;
 }
 
-/* Event Description */
 .event-item p {
   color: #666;
   line-height: 1.5;
   margin-top: 10px;
 }
 
-/* Delete Button */
-.delete-btn {
-  background-color: #dc3545;
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  width: 100%;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.edit-btn, .delete-btn {
   color: white;
   border: none;
   padding: 8px 12px;
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
-  margin-top: 10px;
   transition: background 0.3s;
+  width: 20%;
+  text-align: center;
+}
+
+.edit-btn {
+  background-color: #007bff;
+}
+
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.delete-btn {
+  background-color: #dc3545;
 }
 
 .delete-btn:hover {
   background-color: #c82333;
 }
 
-/* Responsive: If screen width is small, show one event per row */
 @media (max-width: 600px) {
   .event-list {
-    grid-template-columns: 1fr; /* Only one column on small screens */
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    flex-direction: row;
+    justify-content: space-between;
   }
 }
+
+

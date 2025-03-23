@@ -1,10 +1,10 @@
 import React from "react";
-import Events from "../models/Events";
+import YourEvents from "../models/YourEvents";
+import OtherEvents from "../models/OtherEvents";
 import { useAuth } from "../../context/AuthContext";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "../Navbar";
-import "../../styles/Events.css"
-
+import "../../styles/Events.css";
 
 interface DecodedToken {
   sub: string;
@@ -46,7 +46,24 @@ const Dashboard: React.FC<DashboardProps> = ({ defaultUsername }) => {
         <h1>Welcome, {username}!</h1>
         <p>Role: {role}</p>
         <p>Token Expires At: {expirationTime}</p>
-        <Events />
+
+        {role === "ROLE_ADMIN" ? (
+          <div>
+            <h1>All Events - </h1>
+            <YourEvents endpoint="allEvents" />
+          </div>
+        ) : (
+          <>
+            <div>
+              <h1>Events hosted by you - </h1>
+              <YourEvents endpoint="hostedByMeEvents" />
+            </div>
+            <div>
+              <h1>Other Events you can join - </h1>
+              <OtherEvents endpoint="hostedByOthersEvents" />
+            </div>
+          </>
+        )}
       </div>
     </>
   );
