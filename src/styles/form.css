@@ -43,12 +43,13 @@ button:hover {
 /* Switch between Login & Register */
 .switch-btn {
   background: none;
-  color: #007bff;
+  color: blue;
   border: none;
   cursor: pointer;
   font-size: 14px;
 }
 
 .switch-btn:hover {
-  text-decoration: underline;
+  background: none;
+  transform: scale(1.05);
 }

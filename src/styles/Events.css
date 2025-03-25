@@ -79,6 +79,7 @@ hr {
 .event-item h2 {
   color: #007bff;
   margin-bottom: 5px;
+  align-items: left;
 }
 
 .event-item h4 {
@@ -94,9 +95,16 @@ hr {
 
 .event-header {
   display: flex;
-  justify-content: space-between;
-  align-items: center; 
+  flex-direction: column; /* Stack title and date vertically */
+  align-items: flex-start; /* Ensure everything is left-aligned */
+  text-align: left; /* Ensure text aligns to the left */
   width: 100%;
+}
+
+.event-header h2 {
+  margin: 0; /* Remove any extra margin */
+  word-wrap: break-word; /* Ensure proper word wrapping */
+  text-align: left; /* Ensure text is left-aligned */
 }
 
 .button-group {
@@ -105,7 +113,7 @@ hr {
   margin-top: 10px;
 }
 
-.edit-btn, .delete-btn, .join-btn{
+.edit-btn, .delete-btn, .join-btn, .leave-btn{
   color: white;
   border: none;
   padding: 8px 12px;
@@ -125,11 +133,11 @@ hr {
   background-color: #0056b3;
 }
 
-.delete-btn {
+.delete-btn, .leave-btn {
   background-color: #dc3545;
 }
 
-.delete-btn:hover {
+.delete-btn:hover, .leave-btn:hover {
   background-color: #c82333;
 }
 

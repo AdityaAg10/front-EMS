@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import api from "../../services/api";
-import axios from "axios";
 import "../../styles/Events.css";
 
 interface Event {
@@ -19,26 +18,71 @@ interface EventsProps {
 
 const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   useEffect(() => {
     fetchEvents();
+    extractUsernameFromToken();
   }, [endpoint]);
 
+  // Fetch events from backend
   const fetchEvents = () => {
-    const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
     api.get<Event[]>(`/events/${endpoint}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => {
-        console.log("Fetched events:", res.data);
-        setEvents(res.data);
-      })
+      .then((res) => setEvents(res.data))
       .catch(() => alert("Failed to fetch events"));
   };
 
+  // Extract username from token without making an API request
+  const extractUsernameFromToken = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1])); // Decode JWT payload
+        setCurrentUser(payload.sub); // Assuming username is stored in "sub" (subject) claim
+      } catch (error) {
+        console.error(error || "Invalid token format");
+      }
+    }
+  };
 
+  // Join Event
+  const handleJoinEvent = (eventId: number) => {
+    const token = localStorage.getItem("token");
+    api.put(`/users/joinEvent/${eventId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        alert(res.data);
+        fetchEvents();
+      })
+      .catch((error) => {
+        alert(error.response?.data || "Failed to join the event");
+      });
+  };
+
+  // Leave Event
+  const handleLeaveEvent = (eventId: number) => {
+    const token = localStorage.getItem("token");
+    api.put(`/users/leaveEvent/${eventId}`, {}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        alert(res.data);
+        fetchEvents();
+      })
+      .catch((error) => {
+        alert(error.response?.data || "Failed to leave the event");
+      });
+  };
 
   return (
     <div className="events-container">
@@ -49,9 +93,13 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
               <h2>{event.title}</h2>
               <h2>{event.date}</h2>
             </div>
-            <h4>Hosted by - {event.hosts}</h4>
+            <h4>Hosted by - {event.hosts.join(", ")}</h4>
             <p>{event.description}</p>
-            <button className="join-btn">Join</button>
+            {currentUser && event.participants.includes(currentUser) ? (
+              <button className="leave-btn" onClick={() => handleLeaveEvent(event.id)}>Leave</button>
+            ) : (
+              <button className="join-btn" onClick={() => handleJoinEvent(event.id)}>Join</button>
+            )}
           </li>
         ))}
       </ul>

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../services/api";
 import "../../styles/EditEvent.css";
+import { AxiosError } from "axios";
+import Navbar from "../Navbar";
 
 const EditEvent: React.FC = () => {
   const { eventId } = useParams();
@@ -11,11 +13,15 @@ const EditEvent: React.FC = () => {
     description: "",
     date: "",
     location: "",
+    hosts: [] as string[],
+    participants: ""
   });
   const [loading, setLoading] = useState(true);
+  const [newHost, setNewHost] = useState("");
+  const [hostsVisible, setHostsVisible] = useState(false);
 
   useEffect(() => {
-    console.log("Event ID received in EditEvent:", eventId); // Debugging
+    console.log("Event ID received in EditEvent:", eventId);
     fetchEvent();
   }, [eventId]);
 
@@ -25,10 +31,10 @@ const EditEvent: React.FC = () => {
       const response = await api.get(`/events/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(response.data);
       setEventData(response.data);
-    }
-    catch (error) {
-      console.log(error)
+    } catch (error) {
+      console.log(error);
       alert("Failed to fetch event details");
     } finally {
       setLoading(false);
@@ -50,14 +56,74 @@ const EditEvent: React.FC = () => {
       alert("Event updated successfully!");
       navigate("/userEvents");
     } catch (error) {
-        console.log(error)
+      console.log(error);
       alert("Failed to update event");
+    }
+  };
+
+  const handleAddHost = async () => {
+    if (!newHost) return;
+    try {
+      const token = localStorage.getItem("token");
+      const res = await api.put(`/events/addhosts/${eventId}`, {newHostUsername: newHost },  {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      alert(res.data);
+      setEventData(prev => ({ ...prev, hosts: [...prev.hosts, newHost] }));
+      setNewHost("");
+    } catch (error: unknown) {
+      console.log("Error response:", error);
+
+      let errorMessage = "Failed to add host";
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data || error.message;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      alert(errorMessage);
+      // return;
+    } finally {
+      setNewHost(""); 
+    }
+  };
+
+  const handleRemoveHost = async (hostToRemove: string) => {
+    if (eventData.hosts.length <= 1) {
+      alert("At least one host must remain.");
+      return;
+    }
+
+    try {
+      const token = localStorage.getItem("token");
+      const res = await api.delete(`/events/deletehost/${eventId}`, {
+        params: { hostName: hostToRemove },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      alert(res.data);
+      setEventData(prev => ({
+        ...prev,
+        hosts: prev.hosts.filter(host => host !== hostToRemove),
+      }));
+    } catch (error: unknown) {
+      console.log("Error response:", error);
+      
+      let errorMessage = "Failed to remove host";
+      if (error instanceof AxiosError) {
+        errorMessage = error.response?.data || error.message;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      alert(errorMessage);
     }
   };
 
   if (loading) return <p>Loading event details...</p>;
 
   return (
+    <>
+    <Navbar/>
     <div className="edit-event-container">
       <h2>Edit Event</h2>
       <form onSubmit={handleSubmit} className="edit-event-form">
@@ -75,7 +141,34 @@ const EditEvent: React.FC = () => {
 
         <button type="submit" className="save-btn">Save Changes</button>
       </form>
-    </div>
+
+      <button onClick={() => setHostsVisible(!hostsVisible)} className="toggle-hosts-btn">
+        {hostsVisible ? "Hide Hosts" : "Show Hosts"}
+      </button>
+
+      {hostsVisible && (
+        <div className="hosts-section">
+          <h3>Current Hosts:</h3>
+          <ul>
+            {eventData.hosts.map((host, index) => (
+              <li key={index} className="host-item">
+                {host} 
+                <button onClick={() => handleRemoveHost(host)} className="remove-host-btn">✖</button>
+              </li>
+            ))}
+          </ul>
+
+          <input
+            type="text"
+            value={newHost}
+            onChange={(e) => setNewHost(e.target.value)}
+            placeholder="Enter new host username"
+          />
+          <button onClick={handleAddHost} className="add-host-btn">Add Host</button>
+        </div>
+      )}
+      </div>
+    </>
   );
 };
 

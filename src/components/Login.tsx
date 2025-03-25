@@ -70,13 +70,13 @@ const Login = () => {
           required
         />
         <button type="submit">Login</button>
+      </form>
         <p>
           Don't have an account?{" "}
           <button className="switch-btn" onClick={() => navigate("/register")}>
             Register
           </button>
         </p>
-      </form>
     </div>
   );
 };

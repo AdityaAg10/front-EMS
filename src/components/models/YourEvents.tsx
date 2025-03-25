@@ -80,9 +80,9 @@ const YourEvents: React.FC<EventsProps> = ({ endpoint }) => {
           <li key={event.id} className="event-item">
             <div className="event-header">
               <h2>{event.title}</h2>
-              <h2>{event.date}</h2>
+              <h4>{event.date}</h4>
             </div>
-            <h4>Hosted by - {event.hosts}</h4>
+            <h4>Hosted by - {event.hosts.join(", ")}</h4>
             <p>{event.description}</p>
             <div className="button-group">
               <button className="edit-btn" onClick={() => handleEdit(event.id)}>Edit</button>

@@ -74,3 +74,98 @@
 .cancel-btn:hover {
   background-color: #5a6268;
 }
+
+.hosts-section {
+  margin-top: 20px;
+  padding: 15px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hosts-section h3 {
+  color: #333;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.hosts-section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.host-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+  color: #444;
+}
+
+.host-item:last-child {
+  border-bottom: none;
+}
+
+.add-host-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.add-host-container input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.add-host-btn {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.add-host-btn:hover {
+  background-color: #218838;
+}
+
+.remove-host-btn {
+  background: red;
+  color: white;
+  border: none;
+  padding: 5px 8px;
+  cursor: pointer;
+  border-radius: 50%;
+  font-size: 14px;
+  transition: background 0.3s;
+}
+
+.remove-host-btn:hover {
+  background: darkred;
+}
+
+.toggle-hosts-btn {
+  margin-top: 15px;
+  width: 100%;
+  background-color: #ffc107;
+  color: #333;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.toggle-hosts-btn:hover {
+  background-color: #e0a800;
+}
