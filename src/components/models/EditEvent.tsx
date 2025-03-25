@@ -14,11 +14,13 @@ const EditEvent: React.FC = () => {
     date: "",
     location: "",
     hosts: [] as string[],
-    participants: ""
+    participants: [] as string[],
   });
   const [loading, setLoading] = useState(true);
   const [newHost, setNewHost] = useState("");
+  const [newParticipant, setNewParticipant] = useState("");
   const [hostsVisible, setHostsVisible] = useState(false);
+  const [participantsVisible, setParticipantsVisible] = useState(false);
 
   useEffect(() => {
     console.log("Event ID received in EditEvent:", eventId);
@@ -65,26 +67,15 @@ const EditEvent: React.FC = () => {
     if (!newHost) return;
     try {
       const token = localStorage.getItem("token");
-      const res = await api.put(`/events/addhosts/${eventId}`, {newHostUsername: newHost },  {
+      const res = await api.put(`/events/addhosts/${eventId}`, { newHostUsername: newHost }, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       alert(res.data);
       setEventData(prev => ({ ...prev, hosts: [...prev.hosts, newHost] }));
       setNewHost("");
-    } catch (error: unknown) {
+    } catch (error) {
       console.log("Error response:", error);
-
-      let errorMessage = "Failed to add host";
-      if (error instanceof AxiosError) {
-        errorMessage = error.response?.data || error.message;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      alert(errorMessage);
-      // return;
-    } finally {
-      setNewHost(""); 
+      alert("Failed to add host");
     }
   };
 
@@ -93,29 +84,64 @@ const EditEvent: React.FC = () => {
       alert("At least one host must remain.");
       return;
     }
-
     try {
       const token = localStorage.getItem("token");
-      const res = await api.delete(`/events/deletehost/${eventId}`, {
+      await api.delete(`/events/deletehost/${eventId}`, {
         params: { hostName: hostToRemove },
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      alert(res.data);
-      setEventData(prev => ({
-        ...prev,
-        hosts: prev.hosts.filter(host => host !== hostToRemove),
-      }));
-    } catch (error: unknown) {
+      setEventData(prev => ({ ...prev, hosts: prev.hosts.filter(host => host !== hostToRemove) }));
+    } catch (error) {
       console.log("Error response:", error);
-      
-      let errorMessage = "Failed to remove host";
-      if (error instanceof AxiosError) {
-        errorMessage = error.response?.data || error.message;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      alert(errorMessage);
+      alert("Failed to remove host");
+    }
+  };
+
+  const handleAddParticipant = async () => {
+    if (!newParticipant) return;
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Error: You must be logged in to add a participant.");
+            return;
+        }
+
+        const res = await api.put(
+            `/events/addParticipant/${eventId}`,
+            { username: newParticipant },
+            { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } }
+        );
+
+        alert(res.data);
+        setEventData(prev => ({ ...prev, participants: [...prev.participants, newParticipant] }));
+        setNewParticipant("");
+    } catch (error: unknown) {
+        console.log("Error response:", error);
+
+        let errorMessage = "Failed to add participant";
+        if (error instanceof AxiosError) {
+            errorMessage = error.response?.data || error.message;
+        } else if (error instanceof Error) {
+            errorMessage = error.message;
+        }
+        alert(errorMessage);
+    } finally {
+        setNewParticipant("");
+    }
+};
+
+
+  const handleRemoveParticipant = async (participantToRemove: string) => {
+    try {
+      const token = localStorage.getItem("token");
+      await api.delete(`/events/removeParticipant/${eventId}`, {
+        params: { participantName: participantToRemove },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setEventData(prev => ({ ...prev, participants: prev.participants.filter(participant => participant !== participantToRemove) }));
+    } catch (error) {
+      console.log("Error response:", error);
+      alert("Failed to remove participant");
     }
   };
 
@@ -123,26 +149,26 @@ const EditEvent: React.FC = () => {
 
   return (
     <>
-    <Navbar/>
-    <div className="edit-event-container">
-      <h2>Edit Event</h2>
-      <form onSubmit={handleSubmit} className="edit-event-form">
-        <label>Title:</label>
-        <input type="text" name="title" value={eventData.title} onChange={handleChange} required />
+      <Navbar />
+      <div className="edit-event-container">
+        <h2>Edit Event</h2>
+        <form onSubmit={handleSubmit} className="edit-event-form">
+          <label>Title:</label>
+          <input type="text" name="title" value={eventData.title} onChange={handleChange} required />
 
-        <label>Description:</label>
-        <textarea name="description" value={eventData.description} onChange={handleChange} required />
+          <label>Description:</label>
+          <textarea name="description" value={eventData.description} onChange={handleChange} required />
 
-        <label>Date:</label>
-        <input type="date" name="date" value={eventData.date} onChange={handleChange} required />
+          <label>Date:</label>
+          <input type="date" name="date" value={eventData.date} onChange={handleChange} required />
 
-        <label>Location:</label>
-        <input type="text" name="location" value={eventData.location} onChange={handleChange} required />
+          <label>Location:</label>
+          <input type="text" name="location" value={eventData.location} onChange={handleChange} required />
 
-        <button type="submit" className="save-btn">Save Changes</button>
-      </form>
+          <button type="submit" className="save-btn">Save Changes</button>
+        </form>
 
-      <button onClick={() => setHostsVisible(!hostsVisible)} className="toggle-hosts-btn">
+        <button onClick={() => setHostsVisible(!hostsVisible)} className="toggle-hosts-btn">
         {hostsVisible ? "Hide Hosts" : "Show Hosts"}
       </button>
 
@@ -167,6 +193,28 @@ const EditEvent: React.FC = () => {
           <button onClick={handleAddHost} className="add-host-btn">Add Host</button>
         </div>
       )}
+
+      
+
+        <button onClick={() => setParticipantsVisible(!participantsVisible)} className="toggle-participants-btn">
+          {participantsVisible ? "Hide Participants" : "Show Participants"}
+        </button>
+
+        {participantsVisible && (
+          <div className="participants-section">
+            <h3>Current Participants:</h3>
+            <ul>
+              {eventData.participants.map((participant, index) => (
+                <li key={index} className="participant-item">
+                  {participant}
+                  <button onClick={() => handleRemoveParticipant(participant)} className="remove-participant-btn">✖</button>
+                </li>
+              ))}
+            </ul>
+            <input type="text" value={newParticipant} onChange={(e) => setNewParticipant(e.target.value)} placeholder="Enter participant username" />
+            <button onClick={handleAddParticipant} className="add-participant-btn">Add Participant</button>
+          </div>
+        )}
       </div>
     </>
   );

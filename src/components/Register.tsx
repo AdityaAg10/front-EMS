@@ -11,6 +11,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await api.post("/registration", { ...form, role: "ROLE_USER" }); // Default role
+      alert("User registered successfully")
       navigate("/login");
     } catch {
       alert("Registration failed");

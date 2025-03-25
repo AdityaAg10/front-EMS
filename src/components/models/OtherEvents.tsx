@@ -3,7 +3,7 @@ import api from "../../services/api";
 import "../../styles/Events.css";
 
 interface Event {
-  id: number;
+  id: string;
   title: string;
   description: string;
   date: string;
@@ -51,7 +51,7 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
   };
 
   // Join Event
-  const handleJoinEvent = (eventId: number) => {
+  const handleJoinEvent = (eventId: string) => {
     const token = localStorage.getItem("token");
     api.put(`/users/joinEvent/${eventId}`, {}, {
       headers: {
@@ -68,7 +68,7 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
   };
 
   // Leave Event
-  const handleLeaveEvent = (eventId: number) => {
+  const handleLeaveEvent = (eventId: string) => {
     const token = localStorage.getItem("token");
     api.put(`/users/leaveEvent/${eventId}`, {}, {
       headers: {
@@ -91,9 +91,10 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
           <li key={event.id} className="event-item">
             <div className="event-header">
               <h2>{event.title}</h2>
-              <h2>{event.date}</h2>
+              <h4>Event Date: {event.date}</h4>
             </div>
             <h4>Hosted by - {event.hosts.join(", ")}</h4>
+            <h4>Participants: <strong>{event.participants.length}</strong></h4>
             <p>{event.description}</p>
             {currentUser && event.participants.includes(currentUser) ? (
               <button className="leave-btn" onClick={() => handleLeaveEvent(event.id)}>Leave</button>
