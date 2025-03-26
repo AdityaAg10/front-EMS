@@ -152,6 +152,11 @@ const EditEvent: React.FC = () => {
       <Navbar />
       <div className="edit-event-container">
         <h2>Edit Event</h2>
+        <div className="back-btn-editevent">
+          <button className="back-button" onClick={() => navigate("/userEvents")}>
+            Go Back
+          </button>
+        </div>
         <form onSubmit={handleSubmit} className="edit-event-form">
           <label>Title:</label>
           <input type="text" name="title" value={eventData.title} onChange={handleChange} required />

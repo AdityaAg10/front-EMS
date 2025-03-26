@@ -77,3 +77,32 @@ ul li {
   text-align: center;
   margin-top: 10px;
 }
+
+
+.back-button {
+  background: linear-gradient(135deg, #ff7eb3, #ff758c);
+  color: white;
+  padding: 8px 16px; /* Reduced padding */
+  font-size: 14px; /* Smaller font size */
+  font-weight: bold;
+  border: none;
+  border-radius: 20px; /* Slightly rounded */
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background 0.3s ease-in-out;
+  box-shadow: 0 2px 6px rgba(255, 117, 140, 0.3);
+  margin-bottom: 10px; /* Less margin */
+  text-transform: uppercase;
+  letter-spacing: 0.5px; /* Slight letter spacing */
+}
+
+.back-button:hover {
+  transform: scale(1.08); /* More noticeable hover effect */
+  background: linear-gradient(135deg, #ff758c, #ff5277); /* Slight color shift */
+  box-shadow: 0 4px 12px rgba(255, 82, 119, 0.5); /* Stronger shadow */
+}
+
+.back-button:active {
+  transform: scale(0.96); /* Subtle press effect */
+  box-shadow: 0 2px 4px rgba(255, 82, 119, 0.3);
+}
+

@@ -1,0 +1,212 @@
+/* Container Styling */
+.expenses-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+/* Headings */
+h2 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Form Styling */
+.add-category-form,
+.add-expense-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: #f4f4f4;
+  border-radius: 8px;
+}
+
+.add-category-form input,
+.add-expense-form input,
+.add-expense-form select {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  width: 100%;
+}
+
+.add-category-form button,
+.add-expense-form button,
+.update-button {
+  padding: 12px;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease-in-out;
+}
+
+.add-category-form button:hover,
+.add-expense-form button:hover,
+.update-button:hover {
+  background: #218838;
+}
+
+/* Category Styling */
+.expense-category {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  text-align: left;
+}
+
+.expense-category h3 {
+  font-size: 20px;
+  color: #555;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+/* Expense List */
+.expense-list {
+  list-style: none;
+  padding: 0;
+}
+
+.expense-item {
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  background: #ffffff;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  font-size: 16px;
+}
+
+/* First row: Description & Price */
+.expense-top-row {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.expense-meta1{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+
+/* Second row: Added by & Date */
+.expense-meta {
+  font-size: 14px;
+  color: #777;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+/* Update button */
+.update-button {
+  padding: 8px 12px;
+  font-size: 14px;
+  background: #007bff;
+  border-radius: 6px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out;
+  margin-top: 8px;
+  align-self: flex-end;
+}
+
+.update-button:hover {
+  background: #0056b3;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.modal-content h3 {
+  margin-bottom: 15px;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.modal-content button {
+  padding: 8px 12px;
+  margin: 5px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.modal-content button:first-of-type {
+  background: #28a745;
+  color: white;
+}
+
+.modal-content button:last-of-type {
+  background: #dc3545;
+  color: white;
+}
+
+
+
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .expenses-container {
+    max-width: 90%;
+  }
+
+  .expense-top-row,
+  .expense-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .update-button {
+    width: 100%;
+    text-align: center;
+  }
+}

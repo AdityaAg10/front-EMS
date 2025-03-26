@@ -34,7 +34,7 @@
   min-height: 100px;
 }
 
-.create-event-container button {
+.create-event-container .create-btn {
   background: #007bff;
   color: white;
   border: none;
@@ -45,6 +45,13 @@
   transition: background 0.3s;
 }
 
-.create-event-container button:hover {
+.create-event-container .create-btn:hover {
   background: #0056b3;
+}
+
+.back-btn-editevent {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  align-items: center;
+  margin-bottom: 20px; /* Adds some spacing */
 }

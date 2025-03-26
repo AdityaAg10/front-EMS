@@ -269,3 +269,10 @@
 .toggle-participants-btn:hover {
   background-color: #e0a800;
 }
+
+.back-btn-editevent {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  align-items: center;
+  margin-bottom: 20px; /* Adds some spacing */
+}

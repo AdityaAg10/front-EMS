@@ -79,6 +79,11 @@ const CreateEvent: React.FC = () => {
       <Navbar />
       <div className="create-event-container">
         <h1>Create New Event</h1>
+        <div className="back-btn-editevent">
+          <button className="back-button" onClick={() => navigate("/userEvents")}>
+            Go Back
+          </button>
+        </div>
         <form onSubmit={handleSubmit}>
           <input type="text" name="title" placeholder="Title" onChange={handleChange} required />
           <textarea name="description" placeholder="Description" onChange={handleChange} required />
@@ -86,7 +91,7 @@ const CreateEvent: React.FC = () => {
           <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
           <input type="text" name="participants" placeholder="Participants (comma-separated)" onChange={handleParticipantsChange} />
 
-          <button type="submit">Create Event</button>
+          <button type="submit" className="create-btn">Create Event</button>
         </form>
       </div>
     </>

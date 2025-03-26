@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../services/api";
-import axios from "axios";
 import "../../styles/Events.css";
 
 interface Event {
@@ -14,64 +13,63 @@ interface Event {
   hosts: string[];
 }
 
-interface EventsProps {
-  endpoint: string;
-}
-
-const YourEvents: React.FC<EventsProps> = ({ endpoint }) => {
+const YourEvents: React.FC<{ endpoint: string }> = ({ endpoint }) => {
   const [events, setEvents] = useState<Event[]>([]);
+  const [expenses, setExpenses] = useState<{ [key: number]: number }>({});
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchEvents();
   }, [endpoint]);
 
-  const fetchEvents = () => {
+  const fetchEvents = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const res = await api.get<Event[]>(`/events/${endpoint}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setEvents(res.data);
+      fetchExpenses(res.data);
+    } catch (error) {
+      alert(error || "Failed to fetch events");
+    }
+  };
+
+  const fetchExpenses = async (events: Event[]) => {
     const token = localStorage.getItem("token");
-    api.get<Event[]>(`/events/${endpoint}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => {
-        console.log("Fetched events:", res.data);
-        setEvents(res.data);
+    const newExpenses: { [key: number]: number } = {};
+    
+    await Promise.all(
+      events.map(async (event) => {
+        try {
+          const res = await api.get<number>(`/expenses/total/${event.id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          newExpenses[event.id] = res.data;
+        } catch (error) {
+          console.error(`Failed to fetch expenses for event ${event.id} ${error}`);
+        }
       })
-      .catch(() => alert("Failed to fetch events"));
+    );
+    setExpenses(newExpenses);
   };
 
   const handleDelete = async (eventId: number) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this event?");
-    if (!confirmDelete) return;
-
+    if (!window.confirm("Are you sure you want to delete this event?")) return;
     try {
       const token = localStorage.getItem("token");
-      api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
       await api.delete(`/events/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       setEvents(events.filter((event) => event.id !== eventId));
       alert("Event deleted successfully!");
     } catch (error) {
-      console.log(error);
-      if (axios.isAxiosError(error) && error.response) {
-        const errorMessage = error.response.data?.data || "Access Denied";
-        console.error("Error deleting event:", errorMessage);
-        alert(`Failed to delete event: ${errorMessage}`);
-      } else {
-        console.error("Unexpected error:", error);
-        alert("An unexpected error occurred while deleting the event.");
-      }
+      alert(error || "Failed to delete event");
     }
   };
 
-  const handleEdit = (eventId: number) => {
-    try {
-      navigate(`/editEvent/${eventId}`);  
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const handleEdit = (eventId: number) => navigate(`/editEvent/${eventId}`);
+  const handleExpenses = (eventId: number) => navigate(`/event/${eventId}/expenses`);
 
   return (
     <div className="events-container">
@@ -84,10 +82,12 @@ const YourEvents: React.FC<EventsProps> = ({ endpoint }) => {
             </div>
             <h4>Hosted by - {event.hosts.join(", ")}</h4>
             <h4>Participants: <strong>{event.participants.length}</strong></h4>
+            <h4>Total Expenses: <strong>${expenses[event.id] || 0}</strong></h4>
             <p>{event.description}</p>
             <div className="button-group">
               <button className="edit-btn" onClick={() => handleEdit(event.id)}>Edit</button>
               <button className="delete-btn" onClick={() => handleDelete(event.id)}>Delete</button>
+              <button className="expenses-btn" onClick={() => handleExpenses(event.id)}>Handle Expenses</button>
             </div>
           </li>
         ))}
