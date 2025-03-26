@@ -7,6 +7,7 @@ interface Event {
   title: string;
   description: string;
   date: string;
+  fee: number;
   location: string;
   participants: string[];
   hosts: string[];
@@ -95,6 +96,7 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
             </div>
             <h4>Hosted by - {event.hosts.join(", ")}</h4>
             <h4>Participants: <strong>{event.participants.length}</strong></h4>
+            <h4>Fee: <strong>{event.fee}</strong></h4>
             <p>{event.description}</p>
             {currentUser && event.participants.includes(currentUser) ? (
               <button className="leave-btn" onClick={() => handleLeaveEvent(event.id)}>Leave</button>

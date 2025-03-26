@@ -22,18 +22,24 @@ const CreateEvent: React.FC = () => {
     description: string;
     date: string;
     location: string;
+    fee: number; // Ensuring fee is of type number
     participants: string[];
   }>({
     title: "",
     description: "",
     date: "",
     location: "",
+    fee: 0, // Default value for fee
     participants: [],
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setEventData((prevData) => ({ ...prevData, [name]: value }));
+
+    setEventData((prevData) => ({
+      ...prevData,
+      [name]: name === "fee" ? parseFloat(value) || 0 : value, // Convert fee to number
+    }));
   };
 
   const handleParticipantsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -52,22 +58,22 @@ const CreateEvent: React.FC = () => {
           "Content-Type": "application/json",
         },
       });
-        let role = "";
-        if (token) {
+
+      let role = "";
+      if (token) {
         try {
           const decoded: DecodedToken = jwtDecode<DecodedToken>(token);
           role = decoded.role;
         } catch (error) {
           console.error("Error decoding token:", error);
         }
-        }
-        
-        if (role === "ROLE_ADMIN") {
+      }
+
+      if (role === "ROLE_ADMIN") {
         navigate("/adminEvents");
       } else {
         navigate("/userEvents");
       }
-        
 
     } catch (error) {
       console.error("Error creating event:", error);
@@ -89,6 +95,7 @@ const CreateEvent: React.FC = () => {
           <textarea name="description" placeholder="Description" onChange={handleChange} required />
           <input type="date" name="date" onChange={handleChange} required />
           <input type="text" name="location" placeholder="Location" onChange={handleChange} required />
+          <input type="number" name="fee" placeholder="Fee" onChange={handleChange} required min="0" step="0.01" />
           <input type="text" name="participants" placeholder="Participants (comma-separated)" onChange={handleParticipantsChange} />
 
           <button type="submit" className="create-btn">Create Event</button>

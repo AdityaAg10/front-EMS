@@ -13,6 +13,7 @@ const EditEvent: React.FC = () => {
     description: "",
     date: "",
     location: "",
+    fee: 0.0,
     hosts: [] as string[],
     participants: [] as string[],
   });
@@ -43,9 +44,9 @@ const EditEvent: React.FC = () => {
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setEventData({ ...eventData, [name]: value });
+    setEventData({ ...eventData, [name]: value});
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -169,6 +170,9 @@ const EditEvent: React.FC = () => {
 
           <label>Location:</label>
           <input type="text" name="location" value={eventData.location} onChange={handleChange} required />
+
+          <label>Fee:</label>
+          <input type="number" name="fee" value={eventData.fee} onChange={handleChange} step="0.01" required />
 
           <button type="submit" className="save-btn">Save Changes</button>
         </form>
