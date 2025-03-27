@@ -27,7 +27,7 @@ interface Event {
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ userName: "", password: "" });
+  const [form, setForm] = useState({ userName: "Aditya2", password: "securepassword4" });
   const [events, setEvents] = useState<Event[]>([]); // State to store events
 
   useEffect(() => {

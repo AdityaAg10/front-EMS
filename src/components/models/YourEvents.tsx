@@ -82,9 +82,20 @@ const YourEvents: React.FC<{ endpoint: string }> = ({ endpoint }) => {
               <h4>Event Date: {event.date}</h4>
             </div>
             <h4>Hosted by - {event.hosts.join(", ")}</h4>
-            <h4>Participants: <strong>{event.participants.length}</strong></h4>
-            <h4>Fee: <strong>{event.fee}</strong></h4>
-            <h4>Total Expenses: <strong>${expenses[event.id] || 0}</strong></h4>
+            <div className="event-stats">
+              <div className="stats-row">
+                <h4>Participants: <strong>{event.participants.length}</strong></h4>
+                <h4>Fee: <strong>${event.fee}</strong></h4>
+              </div>
+              <div className="stats-row">
+                <h4>Total Expenses: <strong>${expenses[event.id] || 0}</strong></h4>
+                <h4>
+                  Total Money Made: <strong>
+                    ${event.participants.length * event.fee - (expenses[event.id] || 0)}
+                  </strong>
+                </h4>
+              </div>
+            </div>
             <p>{event.description}</p>
             <div className="button-group">
               <button className="edit-btn" onClick={() => handleEdit(event.id)}>Edit</button>

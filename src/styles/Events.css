@@ -113,6 +113,27 @@ hr {
   margin-top: 10px;
 }
 
+.event-stats {
+  display: flex;
+  flex-direction: column;
+  /* gap: 8px; */
+  width: 100%;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between; /* Distributes space between items */
+  width: 100%; /* Ensures it takes full width */
+}
+
+.stats-row h4 {
+  flex: 1; /* Makes sure elements distribute evenly */
+  text-align: left;
+  font-size: 1rem;
+}
+
+
+
 .edit-btn, .delete-btn, .join-btn, .leave-btn{
   color: white;
   border: none;

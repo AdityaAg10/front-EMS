@@ -9,6 +9,8 @@ import ErrorPage from "./pages/ErrorPage";
 import CreateEvent from "./components/models/CreateEvent";
 import { PrivateRoute } from "./Routes";
 import HandleExpenses from "./components/models/HandleExpenses";
+import ProfilePage from "./components/events/Profile";
+import AllUsers from "./components/models/AllUsers";
 
 const App: React.FC = () => {
   return (
@@ -16,6 +18,8 @@ const App: React.FC = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/editEvent/:eventId" element={<EditEvent />} />
+      <Route path="/profile" element={<ProfilePage/>} />
+      <Route path="/allUsers" element={<AllUsers/>} />
       <Route path="/createEvent" element={<CreateEvent />} />
       <Route path="/event/:eventId/expenses" element={<HandleExpenses />} />
       <Route path="/adminEvents" element={<PrivateRoute><AdminIndex /></PrivateRoute>} />

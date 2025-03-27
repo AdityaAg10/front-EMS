@@ -1,0 +1,92 @@
+/* Profile Page Container */
+.profile-container {
+  width: 100%;
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 25px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+/* Individual sections */
+.profile-section {
+  width: 48%; /* Adjust width for side-by-side layout */
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-section h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+/* Profile Form */
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Labels */
+.profile-form label {
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Input Fields */
+.profile-form input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  background: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+.profile-form input:focus {
+  border-color: #007bff;
+  background: #ffffff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  outline: none;
+}
+
+/* Buttons */
+.save-btn {
+  padding: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.save-btn:hover {
+  background: #0056b3;
+  transform: scale(1.03);
+}
+
+/* Responsive Design: Stack on Small Screens */
+@media (max-width: 768px) {
+  .profile-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .profile-section {
+    width: 90%;
+  }
+}

@@ -17,6 +17,12 @@
   color: white;
 }
 
+.navbar-buttons {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Adds space between Profile and Logout buttons */
+}
+
 button {
   background-color: #ff4d4d;
   color: white;
@@ -31,4 +37,13 @@ button {
 button:hover {
   background-color: #d43f3f;
   transform: scale(1.05);
+}
+
+/* Profile Button */
+.profile-button {
+  background-color: #007bff;
+}
+
+.profile-button:hover {
+  background-color: #0056b3;
 }

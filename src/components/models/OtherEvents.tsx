@@ -95,8 +95,12 @@ const OtherEvents: React.FC<EventsProps> = ({ endpoint }) => {
               <h4>Event Date: {event.date}</h4>
             </div>
             <h4>Hosted by - {event.hosts.join(", ")}</h4>
-            <h4>Participants: <strong>{event.participants.length}</strong></h4>
-            <h4>Fee: <strong>{event.fee}</strong></h4>
+            <div className="event-stats">
+              <div className="stats-row">
+                <h4>Participants: <strong>{event.participants.length}</strong></h4>
+                <h4>Fee: <strong>${event.fee}</strong></h4>
+              </div>
+            </div>
             <p>{event.description}</p>
             {currentUser && event.participants.includes(currentUser) ? (
               <button className="leave-btn" onClick={() => handleLeaveEvent(event.id)}>Leave</button>
